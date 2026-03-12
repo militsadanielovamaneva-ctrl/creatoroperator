@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founders | CreatorOperators</title>
+    <meta name="description" content="Get matched with vetted creators who can turn founder thinking into authority content across LinkedIn, X, Instagram, and video.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #111110;
+            --bg-secondary: #1a1a19;
+            --bg-card: #1e1e1d;
+            --bg-light: #f0f0eb;
+            --text-primary: #fdfdf9;
+            --text-secondary: #c6bfb8;
+            --text-muted: #8a8580;
+            --accent-lavender: #e5ddf4;
+            --accent-olive: #c3c38c;
+            --border: rgba(253,253,249,0.08);
+            --border-light: rgba(253,253,249,0.12);
+            --font-mono: 'Fira Mono', 'SF Mono', monospace;
+            --font-sans: 'Inter', 'Aileron', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 1.25rem 2rem;
+            background: rgba(17,17,16,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s;
+        }
+        nav.scrolled { padding: 0.75rem 2rem; }
+        .nav-inner { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.06em; color: var(--text-secondary); text-transform: lowercase; }
+        .logo span { color: var(--accent-lavender); font-weight: 500; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: color 0.2s; letter-spacing: 0.01em; }
+        .nav-links a:hover { color: var(--text-primary); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.8rem 1.75rem; border-radius: 6px; font-family: var(--font-sans);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.01em;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: none;
+        }
+        .btn-primary { background: var(--text-primary); color: #111110; }
+        .btn-primary:hover { background: var(--accent-lavender); color: #111110; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(229,221,244,0.15); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { border-color: var(--accent-olive); color: var(--accent-olive); transform: translateY(-2px); }
+        .btn-sm { padding: 0.55rem 1.25rem; font-size: 0.8rem; color: #111110 !important; font-weight: 700; }
+        .btn-lg { padding: 1rem 2.5rem; font-size: 0.95rem; }
+
+        /* Layout */
+        section { padding: 7rem 2rem; position: relative; }
+        .section-inner { max-width: 1040px; margin: 0 auto; }
+        .mono-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-lavender); margin-bottom: 1.25rem; }
+        .section-title { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.25rem; }
+        .section-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 580px; line-height: 1.7; font-weight: 400; }
+
+        /* Decorative */
+        .grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        .glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.07; pointer-events: none; }
+        .glow-lavender { background: var(--accent-lavender); }
+        .glow-olive { background: var(--accent-olive); }
+
+        /* Hero */
+        .hero { padding: 10rem 2rem 6rem; position: relative; overflow: hidden; }
+        .hero .glow { top: -200px; right: -200px; }
+        .hero-inner { max-width: 780px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; color: var(--accent-olive); border: 1px solid rgba(195,195,140,0.25); padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 2rem; letter-spacing: 0.05em; }
+        .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-olive); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.8rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+        .hero h1 .highlight { background: linear-gradient(135deg, var(--accent-lavender), var(--accent-olive)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.15rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.75; }
+        .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        /* Problem */
+        .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 3.5rem; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .problem-card { background: var(--bg-primary); padding: 2.25rem; }
+        .problem-card .num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1rem; letter-spacing: 0.1em; }
+        .problem-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text-primary); }
+        .problem-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Vision */
+        .vision { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+        .gap-diagram { display: flex; flex-direction: column; gap: 1.5rem; }
+        .gap-side { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+        .gap-side .label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+        .gap-side.founders .label { color: var(--accent-lavender); }
+        .gap-side.creators .label { color: var(--accent-olive); }
+        .gap-side p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        .gap-bridge { text-align: center; padding: 0.75rem; }
+        .gap-bridge .arrow { font-size: 1.5rem; color: var(--text-muted); line-height: 1; }
+        .gap-bridge p { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-lavender); letter-spacing: 0.05em; }
+        .vision-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
+        .vision-text p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+
+        /* Services */
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 3rem; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .service-card { background: var(--bg-primary); padding: 2.5rem; }
+        .service-card .icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.3rem; }
+        .service-card:nth-child(1) .icon-wrap { background: rgba(229,221,244,0.1); }
+        .service-card:nth-child(2) .icon-wrap { background: rgba(195,195,140,0.1); }
+        .service-card:nth-child(3) .icon-wrap { background: rgba(229,221,244,0.1); }
+        .service-card:nth-child(4) .icon-wrap { background: rgba(195,195,140,0.1); }
+        .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .service-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+        .platforms { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .platform-tag { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border-light); border-radius: 6px; color: var(--text-secondary); letter-spacing: 0.03em; }
+
+        /* Steps */
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3.5rem; }
+        .step-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-olive); letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .step-line { width: 100%; height: 1px; background: linear-gradient(90deg, var(--accent-olive), transparent); margin-bottom: 1.25rem; }
+        .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Vetting */
+        .vetting { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .vetting-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2.5rem; }
+        .vetting-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .vetting-item .check { width: 28px; height: 28px; min-width: 28px; border-radius: 6px; background: rgba(229,221,244,0.08); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--accent-lavender); margin-top: 2px; }
+        .vetting-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .vetting-item p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+
+        /* Pricing */
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+        .pricing-card { border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; background: var(--bg-primary); position: relative; }
+        .pricing-card.featured { border-color: rgba(229,221,244,0.25); background: var(--bg-secondary); }
+        .pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent-lavender), var(--accent-olive)); border-radius: 12px 12px 0 0; }
+        .pricing-card .tier-label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+        .pricing-card:first-child .tier-label { color: var(--accent-olive); }
+        .pricing-card.featured .tier-label { color: var(--accent-lavender); }
+        .pricing-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .pricing-card .price { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .pricing-card ul { list-style: none; padding: 0; margin-bottom: 2rem; }
+        .pricing-card li { padding: 0.45rem 0; padding-left: 1.5rem; position: relative; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+        .pricing-card li::before { content: "~"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--text-muted); }
+        .pricing-card .btn { width: 100%; text-align: center; }
+
+        /* Audience */
+        .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+        .audience-card { border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; background: var(--bg-primary); }
+        .audience-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.4rem; }
+        .audience-card .sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .audience-card ul { list-style: none; padding: 0; margin-bottom: 1.75rem; }
+        .audience-card li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; font-size: 0.9rem; color: var(--text-secondary); }
+        .audience-card li::before { content: "+"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--accent-lavender); font-weight: 700; }
+        .audience-card:last-child li::before { color: var(--accent-olive); }
+        .audience-card .btn { width: 100%; text-align: center; }
+
+        /* Founder story */
+        .founder-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-secondary); }
+        .founder-grid { display: grid; grid-template-columns: 320px 1fr; gap: 4rem; align-items: center; }
+        .founder-photo { width: 100%; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--bg-card); }
+        .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .founder-text .mono-label { margin-bottom: 0.75rem; }
+        .founder-text h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.25rem; letter-spacing: -0.02em; line-height: 1.2; }
+        .founder-text p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+        .founder-creds { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .cred { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); padding: 0.4rem 0.8rem; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.04em; }
+
+        /* FAQ */
+        .faq-list { margin-top: 3rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-q { padding: 1.25rem 0; font-weight: 600; font-size: 1rem; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .faq-q .toggle { font-family: var(--font-mono); font-size: 1rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .faq-item.open .faq-q .toggle { transform: rotate(45deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-secondary); font-size: 0.92rem; line-height: 1.75; }
+        .faq-item.open .faq-a { max-height: 400px; padding-bottom: 1.25rem; }
+
+        /* Final CTA */
+        .final-cta { text-align: center; position: relative; overflow: hidden; padding: 8rem 2rem; }
+        .final-cta .glow-lavender { top: -300px; left: 50%; transform: translateX(-50%); }
+        .final-cta h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; position: relative; z-index: 2; }
+        .final-cta p { color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin: 0 auto 2.5rem; position: relative; z-index: 2; }
+        .final-cta .hero-ctas { position: relative; z-index: 2; }
+
+        /* Footer */
+        footer { padding: 2rem; text-align: center; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.04em; border-top: 1px solid var(--border); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .problem-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .audience-grid { grid-template-columns: 1fr; }
+            .vision-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .founder-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .founder-photo { max-width: 320px; }
+            .vetting-items { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) {
+            section { padding: 4.5rem 1.25rem; }
+            .hero { padding: 8rem 1.25rem 4rem; }
+            nav { padding: 0.75rem 1rem; }
+            .nav-links a:not(.btn) { display: none; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .hero-ctas .btn { width: 100%; max-width: 320px; }
+            .steps { grid-template-columns: 1fr; }
+        }
+    
+    body.creators-theme {
+      --bg-primary: #f6f4ef;
+      --bg-secondary: #eeebe4;
+      --bg-card: #f9f7f2;
+      --text-primary: #181816;
+      --text-secondary: #504c46;
+      --text-muted: #7a746d;
+      --accent-lavender: #4f4a7c;
+      --accent-olive: #6f7248;
+      --border: rgba(24,24,22,0.11);
+      --border-light: rgba(24,24,22,0.18);
+    }
+    body.creators-theme nav {background: rgba(246,244,239,0.9);}
+    body.creators-theme .btn-primary {background:#181816;color:#f6f4ef;}
+    body.creators-theme .btn-primary:hover {background:#2b2a28;color:#f6f4ef; box-shadow:none;}
+    body.creators-theme .btn-secondary {color: var(--text-primary);}
+    .nav-links a.active { color: var(--text-primary); }
+    .nav-links a.btn { margin-left: .5rem; }
+    @media (max-width: 600px) {
+      .nav-links a[data-anchor] { display:none; }
+      .nav-links a[data-page] { display:inline-block !important; }
+    }
+    </style>
+</head>
+<body>
+<div class="grain"></div>
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="/founders" class="logo">creator<span>operators</span></a>
+        <div class="nav-links">
+            <a href="/founders" data-page="founders">For Founders</a>
+            <a href="/creators" data-page="creators">For Creators</a>
+            <a href="#how-it-works" data-anchor="1">Process</a>
+            <a href="#faq" data-anchor="1">FAQ</a>
+        </div>
+    </div>
+</nav>
+<main id="app"></main>
+<footer>&copy; 2026 CreatorOperators &nbsp;&middot;&nbsp; Curated pilot </footer>
+<script>
+const FOUNDER_FORM_URL='https://tally.so/r/q4BX68';
+const CREATOR_FORM_URL='https://tally.so/r/lbAXPV';
+const foundersFaq=[
+['How is this different from hiring a ghostwriter?','The creators in this network do more than write posts. They help shape your narrative, pull signal from your thinking, and build content systems that work across platforms.'],
+['What kind of creators are in the network?','We focus on strategic creators with strong storytelling instinct, platform fluency, and the ability to work closely with founders.'],
+['What platforms do you cover?','LinkedIn, X / Twitter, Instagram, video formats, and newsletter workflows depending on the creator.'],
+['How much does it cost?','Most founder partnerships start as monthly retainers, typically in the $2,000–$6,000/month range depending on scope.'],
+['How do you vet creators?','We assess narrative thinking, extraction skill, platform fluency, niche depth, proof of work, and professionalism.'],
+['What does a first month look like?','Usually a focused pilot with weekly calls, a consistent publishing cadence, and clear deliverables.'],
+['Who owns the content?','Content ownership and usage terms are agreed directly between founder and creator, with clear expectations up front.'],
+['What if the match does not work?','The pilot is designed to test fit quickly before committing longer term.']
+];
+const creatorsFaq=[
+['Who is this for?','Creators who are strong at content and want better opportunities than underpaid brief work.'],
+['Do I need a big audience?','No. We do not filter on follower count. We care about content instinct, niche depth, and strategic thinking.'],
+['What kind of work will I get?','Primarily direct founder partnerships, often retainer-based, with room for deeper strategic collaboration over time.'],
+['Do I need to be on every platform?','No. You can be strong in one or two platforms. We care more about depth and quality than being everywhere.'],
+['How are creators reviewed?','We review proof of work, content quality, niche understanding, and how you think strategically.'],
+['Can this lead to equity?','In some cases, yes. Some founder partnerships can include equity or revenue-share structures.'],
+['Is it really free?','Yes. It is free to apply and free to get matched.']
+];
+function faq(fa){return `<div class="faq-list reveal">${fa.map(x=>`<div class="faq-item"><div class="faq-q">${x[0]}<span class="toggle">+</span></div><div class="faq-a">${x[1]}</div></div>`).join('')}</div>`}
+function founders(){return `
+<section class="hero"><div class="glow glow-lavender"></div><div class="hero-inner"><div class="hero-badge reveal"><span class="dot"></span> For Founders</div><h1 class="reveal reveal-delay-1">Turn your expertise into authority content.<br>Without becoming a full-time creator.</h1><p class="reveal reveal-delay-2">We match founders with vetted creators who can turn your thinking into content, narrative, and audience across LinkedIn, X, Instagram, and video.</p><div class="hero-ctas reveal reveal-delay-3"><a href="${FOUNDER_FORM_URL}" class="btn btn-primary btn-lg">Get matched with a creator &rarr;</a></div></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">The problem</div><h2 class="section-title reveal">Founders need a public voice.<br>The market makes it harder than it should be.</h2><p class="section-subtitle reveal">You know you should be posting. But between running a company and trying to stay consistent, it keeps slipping.</p><div class="problem-grid reveal"><div class="problem-card"><div class="num">01</div><h3>No time, no system</h3><p>You have sharp ideas, strong opinions, and real expertise. But turning that into consistent content across LinkedIn, X, or video takes more time and structure than most founders have.</p></div><div class="problem-card"><div class="num">02</div><h3>Most content help is too generic</h3><p>Writers can write. Agencies can produce. But very few people actually understand your market, your positioning, and what makes your perspective worth following.</p></div><div class="problem-card"><div class="num">03</div><h3>Finding the right person is messy</h3><p>The best people are scattered across referrals, LinkedIn, Twitter, and freelance platforms. No clear discovery layer. No standard way to assess fit. No easy way to know who is actually strategic.</p></div></div></div></section>
+<section class="vision"><div class="section-inner"><div class="mono-label reveal">The solution</div><h2 class="section-title reveal">A better kind of creator for founder-led brands</h2><p class="section-subtitle reveal">Not a generic UGC creator. Not a random freelancer. Not a bloated agency.<br><br>We match founders with creators who are strategic, platform-fluent, and capable of turning founder thinking into content that builds trust and compounds over time.</p></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">What your creator helps you do</div><h2 class="section-title reveal">Strategy, content, and distribution, in one partnership</h2><div class="services-grid reveal"><div class="service-card"><div class="icon-wrap">&#x1f399;</div><h3>Extract your thinking</h3><p>Weekly calls to capture your ideas, market insight, customer signals, and point of view.</p></div><div class="service-card"><div class="icon-wrap">&#x1f4d0;</div><h3>Shape your narrative</h3><p>Turn scattered thoughts into stronger positioning, clear content pillars, and a sharper public voice.</p></div><div class="service-card"><div class="icon-wrap">&#x270d;&#xfe0f;</div><h3>Create and publish</h3><p>Posts, scripts, carousels, short-form video, and platform-native content in a way that actually sounds like you.</p></div><div class="service-card"><div class="icon-wrap">&#x1f4ca;</div><h3>Build consistency</h3><p>Create a repeatable system so your content stops being reactive and starts compounding.</p></div></div><div class="reveal" style="margin-top:2rem;"><p style="font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);letter-spacing:.08em;margin-bottom:.75rem;">PLATFORMS</p><div class="platforms"><span class="platform-tag">LinkedIn</span><span class="platform-tag">X / Twitter</span><span class="platform-tag">Instagram</span><span class="platform-tag">Video</span><span class="platform-tag">Newsletter</span></div></div></div></section>
+<section id="how-it-works"><div class="section-inner"><div class="mono-label reveal">How it works</div><h2 class="section-title reveal">Matched in days, not months</h2><div class="steps reveal"><div class="step"><div class="step-num">01</div><h3>Tell us what you need</h3><p>Share what you are building, where you want to show up, and what kind of support you need.</p></div><div class="step"><div class="step-num">02</div><h3>We match you</h3><p>We recommend a small set of vetted creators based on your niche, format needs, goals, and working style.</p></div><div class="step"><div class="step-num">03</div><h3>Start a paid pilot</h3><p>Begin with a focused first month. Clear scope, clear cadence, clear output.</p></div><div class="step"><div class="step-num">04</div><h3>Keep building</h3><p>If it works, continue as a retainer or evolve into a deeper strategic partnership.</p></div></div></div></section>
+<section id="pricing"><div class="section-inner"><div class="mono-label reveal">Pricing</div><h2 class="section-title reveal">Simple, direct pricing</h2><div class="pricing-grid reveal" style="grid-template-columns:1fr;max-width:680px;"><div class="pricing-card featured"><div class="tier-label">Monthly partnership</div><h3>Typical range: $2,000–$6,000/month</h3><p class="price">You pay the creator directly. Scope depends on your platforms, output, and cadence.</p><ul><li>Weekly strategy / extraction calls</li><li>Multi-format content output</li><li>Defined scope and revision limits</li><li>Ongoing iteration based on what resonates</li></ul><a href="${FOUNDER_FORM_URL}" class="btn btn-primary">Get matched with a creator &rarr;</a></div></div></div></section>
+<section id="faq"><div class="section-inner"><div class="mono-label reveal">FAQ</div><h2 class="section-title reveal">Questions founders ask</h2>${faq(foundersFaq)}</div></section>
+<section class="final-cta"><div class="glow glow-lavender"></div><h2 class="reveal">Ready to build your public voice?</h2><p class="reveal">Work with a vetted creator who can help turn your thinking into content people actually want to follow.</p><div class="hero-ctas reveal"><a href="${FOUNDER_FORM_URL}" class="btn btn-primary btn-lg">Get matched with a creator &rarr;</a></div></section>
+`}
+function creators(){return `
+<section class="hero"><div class="glow glow-lavender"></div><div class="hero-inner"><div class="hero-badge reveal"><span class="dot"></span> Accepting applications</div><h1 class="reveal reveal-delay-1">You're ready for work that matches your ambition.</h1><p class="reveal reveal-delay-2">Stop competing for underpaid briefs. Get matched with founders who need your content skill — in industries you genuinely care about. Free to join.</p><div class="hero-ctas reveal reveal-delay-3"><a href="${CREATOR_FORM_URL}" class="btn btn-primary btn-lg">Apply as a creator &rarr;</a></div></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">The problem</div><h2 class="section-title reveal">The creator market doesn't reward the people who are actually good.</h2><p class="section-subtitle reveal">You're talented. But the way work finds you makes it almost impossible to show what you can really do.</p><div class="problem-grid reveal"><div class="problem-card"><div class="num">01</div><h3>Constant applications, inconsistent pay</h3><p>You're pitching into the void. Dozens of applications for briefs that pay too little, give no creative ownership, and lead nowhere.</p></div><div class="problem-card"><div class="num">02</div><h3>The best opportunities are invisible</h3><p>The most interesting partnerships happen through referrals and closed networks. There's no clear way in, no matter how good your work is.</p></div><div class="problem-card"><div class="num">03</div><h3>You want more than gig work</h3><p>You're thinking bigger. Closer to the business, working in industries you love, with people who value what you bring. But the path there isn't obvious.</p></div></div></div></section>
+<section class="vision"><div class="section-inner"><div class="mono-label reveal">The opportunity</div><h2 class="section-title reveal">A path from creator to strategic partner</h2><p class="section-subtitle reveal">This is for creators who want more than deliverables. You're great at content — writing, video, or both — and you care deeply about a specific space. We match you directly with founders in industries aligned with your interests, so you can do work that actually matters to you. And it's completely free to apply and get matched.</p></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">What we look for</div><h2 class="section-title reveal">You don't need years of experience. You need to be good.</h2><div class="services-grid reveal"><div class="service-card"><div class="icon-wrap">&#x1f3af;</div><h3>Content instinct</h3><p>You know how to find an angle and make something worth watching or reading.</p></div><div class="service-card"><div class="icon-wrap">&#x1f9ed;</div><h3>A niche you care about</h3><p>You're drawn to a specific industry, whether that's AI, wellness, SaaS, fintech, or something else entirely.</p></div><div class="service-card"><div class="icon-wrap">&#x1f4f1;</div><h3>Platform skill</h3><p>You understand how content works on the platforms you use, whether that's LinkedIn, X, Instagram, YouTube, or newsletters.</p></div><div class="service-card"><div class="icon-wrap">&#x1f680;</div><h3>Ambition</h3><p>You want to be closer to the business side. You might not have entrepreneurial experience yet, but you want the exposure.</p></div></div></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">Why join</div><h2 class="section-title reveal">Better pay. Real partnerships. A seat at the table.</h2><div class="services-grid reveal"><div class="service-card"><h3>Get paid what you're worth</h3><p>Work on retainer partnerships instead of competing for underpriced briefs.</p></div><div class="service-card"><h3>Work directly with founders</h3><p>No middlemen, no campaign briefs from marketing teams. You're in the room.</p></div><div class="service-card"><h3>Build in industries you love</h3><p>Get matched based on what you actually care about, not just what's available.</p></div><div class="service-card"><h3>Earn equity in companies you believe in</h3><p>Some partnerships include equity or revenue share, so you benefit as the company grows.</p></div></div><div class="pricing-card reveal" style="padding:2rem;margin-top:1.5rem;"><p style="color:var(--text-secondary);">Free to join — No fees to apply, no fees to get matched. We only win when you do.</p></div></div></section>
+<section><div class="section-inner"><div class="mono-label reveal">Who it's for</div><h2 class="section-title reveal">This is for creators who know they're capable of more</h2><p class="section-subtitle reveal" style="max-width:860px;">Writers, video creators, strategists, multi-format creators. People with niche knowledge in SaaS, AI, wellness, fintech, or other spaces. You don't need a massive audience or years of freelancing experience. You need sharp taste, genuine skill, and ambition.</p></div></section>
+<section id="how-it-works"><div class="section-inner"><div class="mono-label reveal">A note on audience size</div><h2 class="section-title reveal">You don't need to be big</h2><p class="section-subtitle reveal" style="max-width:860px;">We don't filter on follower count. A creator with 5,000 followers and real depth is far more interesting than someone ten times their size with no edge. What matters is your content instinct, your niche knowledge, and how you think.</p><div class="mono-label reveal" style="margin-top:3rem;">How it works</div><h2 class="section-title reveal">How it works</h2><div class="steps reveal"><div class="step"><div class="step-num">01</div><h3>Apply</h3><p>Tell us what you're great at, what industries you care about, and share some proof of work.</p></div><div class="step"><div class="step-num">02</div><h3>We review</h3><p>We look at content quality, niche depth, and strategic thinking. Not follower count.</p></div><div class="step"><div class="step-num">03</div><h3>You're in</h3><p>Accepted creators get access to founder partnerships that match their skill and interests.</p></div><div class="step"><div class="step-num">04</div><h3>Get matched</h3><p>We connect you with founders based on niche, goals, and alignment. You work directly with them.</p></div></div></div></section>
+<section id="faq"><div class="section-inner"><div class="mono-label reveal">FAQ</div><h2 class="section-title reveal">Questions creators ask</h2>${faq(creatorsFaq)}</div></section>
+<section class="final-cta"><div class="glow glow-lavender"></div><h2 class="reveal">Ready for work that matches your ambition?</h2><p class="reveal">Join creators who want better pay, real partnerships, and a chance to build alongside founders they believe in. Free to apply.</p><div class="hero-ctas reveal"><a href="${CREATOR_FORM_URL}" class="btn btn-primary btn-lg">Apply as a creator &rarr;</a></div></section>
+`}
+function page(){return location.pathname.includes('/creators')?'creators':'founders'}
+function setMeta(p){document.title=p==='creators'?'Creators | CreatorOperators':'Founders | CreatorOperators';document.querySelector('meta[name="description"]').setAttribute('content',p==='creators'?'Join the CreatorOperators pilot and move from low-value UGC work to strategic founder partnerships.':'Get matched with vetted creators who can turn founder thinking into authority content across LinkedIn, X, Instagram, and video.')}
+function bind(){document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>{const i=q.parentElement;const w=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!w)i.classList.add('open')}));const reveals=document.querySelectorAll('.reveal');const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>ob.observe(el));window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60));document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}));}
+const p=page();if(p==='creators')document.body.classList.add('creators-theme');document.getElementById('app').innerHTML=p==='creators'?creators():founders();document.querySelectorAll('[data-page]').forEach(a=>a.classList.toggle('active',a.getAttribute('data-page')===p));setMeta(p);bind();
+</script>
+</body></html>
