@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreatorOperators — Strategic Distribution Partners for Founders</title>
+    <meta name="description" content="We match founders with vetted creator-operators who turn your expertise into authority content and distribution across LinkedIn, X, Instagram and video.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #111110;
+            --bg-secondary: #1a1a19;
+            --bg-card: #1e1e1d;
+            --bg-light: #f0f0eb;
+            --text-primary: #fdfdf9;
+            --text-secondary: #c6bfb8;
+            --text-muted: #8a8580;
+            --accent-lavender: #e5ddf4;
+            --accent-olive: #c3c38c;
+            --border: rgba(253,253,249,0.08);
+            --border-light: rgba(253,253,249,0.12);
+            --font-mono: 'Fira Mono', 'SF Mono', monospace;
+            --font-sans: 'Inter', 'Aileron', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 1.25rem 2rem;
+            background: rgba(17,17,16,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s;
+        }
+        nav.scrolled { padding: 0.75rem 2rem; }
+        .nav-inner { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.06em; color: var(--text-secondary); text-transform: lowercase; }
+        .logo span { color: var(--accent-lavender); font-weight: 500; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: color 0.2s; letter-spacing: 0.01em; }
+        .nav-links a:hover { color: var(--text-primary); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.8rem 1.75rem; border-radius: 6px; font-family: var(--font-sans);
+            font-weight: 600; font-size: 0.9rem; letter-spacing: 0.01em;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: none;
+        }
+        .btn-primary { background: var(--text-primary); color: #111110; }
+        .btn-primary:hover { background: var(--accent-lavender); color: #111110; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(229,221,244,0.15); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { border-color: var(--accent-olive); color: var(--accent-olive); transform: translateY(-2px); }
+        .btn-sm { padding: 0.55rem 1.25rem; font-size: 0.8rem; color: #111110 !important; font-weight: 700; }
+        .btn-lg { padding: 1rem 2.5rem; font-size: 0.95rem; }
+
+        /* Layout */
+        section { padding: 7rem 2rem; position: relative; }
+        .section-inner { max-width: 1040px; margin: 0 auto; }
+        .mono-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-lavender); margin-bottom: 1.25rem; }
+        .section-title { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.25rem; }
+        .section-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 580px; line-height: 1.7; font-weight: 400; }
+
+        /* Decorative */
+        .grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        .glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.07; pointer-events: none; }
+        .glow-lavender { background: var(--accent-lavender); }
+        .glow-olive { background: var(--accent-olive); }
+
+        /* Hero */
+        .hero { padding: 10rem 2rem 6rem; position: relative; overflow: hidden; }
+        .hero .glow { top: -200px; right: -200px; }
+        .hero-inner { max-width: 780px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; color: var(--accent-olive); border: 1px solid rgba(195,195,140,0.25); padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 2rem; letter-spacing: 0.05em; }
+        .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-olive); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.8rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+        .hero h1 .highlight { background: linear-gradient(135deg, var(--accent-lavender), var(--accent-olive)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.15rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.75; }
+        .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        /* Problem */
+        .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 3.5rem; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .problem-card { background: var(--bg-primary); padding: 2.25rem; }
+        .problem-card .num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1rem; letter-spacing: 0.1em; }
+        .problem-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text-primary); }
+        .problem-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Vision */
+        .vision { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+        .gap-diagram { display: flex; flex-direction: column; gap: 1.5rem; }
+        .gap-side { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+        .gap-side .label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+        .gap-side.founders .label { color: var(--accent-lavender); }
+        .gap-side.creators .label { color: var(--accent-olive); }
+        .gap-side p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        .gap-bridge { text-align: center; padding: 0.75rem; }
+        .gap-bridge .arrow { font-size: 1.5rem; color: var(--text-muted); line-height: 1; }
+        .gap-bridge p { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-lavender); letter-spacing: 0.05em; }
+        .vision-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
+        .vision-text p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+
+        /* Services */
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 3rem; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .service-card { background: var(--bg-primary); padding: 2.5rem; }
+        .service-card .icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1.3rem; }
+        .service-card:nth-child(1) .icon-wrap { background: rgba(229,221,244,0.1); }
+        .service-card:nth-child(2) .icon-wrap { background: rgba(195,195,140,0.1); }
+        .service-card:nth-child(3) .icon-wrap { background: rgba(229,221,244,0.1); }
+        .service-card:nth-child(4) .icon-wrap { background: rgba(195,195,140,0.1); }
+        .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .service-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+        .platforms { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .platform-tag { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.5rem 1rem; border: 1px solid var(--border-light); border-radius: 6px; color: var(--text-secondary); letter-spacing: 0.03em; }
+
+        /* Steps */
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3.5rem; }
+        .step-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-olive); letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .step-line { width: 100%; height: 1px; background: linear-gradient(90deg, var(--accent-olive), transparent); margin-bottom: 1.25rem; }
+        .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Vetting */
+        .vetting { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .vetting-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2.5rem; }
+        .vetting-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .vetting-item .check { width: 28px; height: 28px; min-width: 28px; border-radius: 6px; background: rgba(229,221,244,0.08); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--accent-lavender); margin-top: 2px; }
+        .vetting-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .vetting-item p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+
+        /* Pricing */
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+        .pricing-card { border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; background: var(--bg-primary); position: relative; }
+        .pricing-card.featured { border-color: rgba(229,221,244,0.25); background: var(--bg-secondary); }
+        .pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent-lavender), var(--accent-olive)); border-radius: 12px 12px 0 0; }
+        .pricing-card .tier-label { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+        .pricing-card:first-child .tier-label { color: var(--accent-olive); }
+        .pricing-card.featured .tier-label { color: var(--accent-lavender); }
+        .pricing-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .pricing-card .price { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .pricing-card ul { list-style: none; padding: 0; margin-bottom: 2rem; }
+        .pricing-card li { padding: 0.45rem 0; padding-left: 1.5rem; position: relative; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+        .pricing-card li::before { content: "~"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--text-muted); }
+        .pricing-card .btn { width: 100%; text-align: center; }
+
+        /* Audience */
+        .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+        .audience-card { border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; background: var(--bg-primary); }
+        .audience-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.4rem; }
+        .audience-card .sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .audience-card ul { list-style: none; padding: 0; margin-bottom: 1.75rem; }
+        .audience-card li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; font-size: 0.9rem; color: var(--text-secondary); }
+        .audience-card li::before { content: "+"; position: absolute; left: 0; font-family: var(--font-mono); color: var(--accent-lavender); font-weight: 700; }
+        .audience-card:last-child li::before { color: var(--accent-olive); }
+        .audience-card .btn { width: 100%; text-align: center; }
+
+        /* Founder story */
+        .founder-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-secondary); }
+        .founder-grid { display: grid; grid-template-columns: 320px 1fr; gap: 4rem; align-items: center; }
+        .founder-photo { width: 100%; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--bg-card); }
+        .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .founder-text .mono-label { margin-bottom: 0.75rem; }
+        .founder-text h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.25rem; letter-spacing: -0.02em; line-height: 1.2; }
+        .founder-text p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+        .founder-creds { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .cred { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); padding: 0.4rem 0.8rem; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.04em; }
+
+        /* FAQ */
+        .faq-list { margin-top: 3rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-q { padding: 1.25rem 0; font-weight: 600; font-size: 1rem; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .faq-q .toggle { font-family: var(--font-mono); font-size: 1rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .faq-item.open .faq-q .toggle { transform: rotate(45deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-secondary); font-size: 0.92rem; line-height: 1.75; }
+        .faq-item.open .faq-a { max-height: 400px; padding-bottom: 1.25rem; }
+
+        /* Final CTA */
+        .final-cta { text-align: center; position: relative; overflow: hidden; padding: 8rem 2rem; }
+        .final-cta .glow-lavender { top: -300px; left: 50%; transform: translateX(-50%); }
+        .final-cta h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; position: relative; z-index: 2; }
+        .final-cta p { color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin: 0 auto 2.5rem; position: relative; z-index: 2; }
+        .final-cta .hero-ctas { position: relative; z-index: 2; }
+
+        /* Footer */
+        footer { padding: 2rem; text-align: center; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.04em; border-top: 1px solid var(--border); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .problem-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .audience-grid { grid-template-columns: 1fr; }
+            .vision-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .founder-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .founder-photo { max-width: 320px; }
+            .vetting-items { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) {
+            section { padding: 4.5rem 1.25rem; }
+            .hero { padding: 8rem 1.25rem 4rem; }
+            nav { padding: 0.75rem 1rem; }
+            .nav-links a:not(.btn) { display: none; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .hero-ctas .btn { width: 100%; max-width: 320px; }
+            .steps { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="#" class="logo">creator<span>operators</span></a>
+        <div class="nav-links">
+            <a href="#how-it-works">Process</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="https://tally.so/r/lbAXPV" class="btn btn-primary btn-sm">Get matched</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="glow glow-lavender"></div>
+    <div class="hero-inner">
+        <div class="hero-badge reveal"><span class="dot"></span> Accepting pilot applications</div>
+        <h1 class="reveal reveal-delay-1">Your expertise deserves<br><span class="highlight">strategic distribution</span></h1>
+        <p class="reveal reveal-delay-2">We match founders with vetted creator-operators who turn your thinking into authority content and audience — across LinkedIn, X, Instagram, and video.</p>
+        <div class="hero-ctas reveal reveal-delay-3">
+            <a href="https://tally.so/r/q4BX68" class="btn btn-primary btn-lg">I'm a founder — Get matched</a>
+            <a href="https://tally.so/r/lbAXPV" class="btn btn-secondary btn-lg">I'm a creator — Apply</a>
+        </div>
+    </div>
+</section>
+
+<!-- PROBLEM -->
+<section>
+    <div class="section-inner">
+        <div class="mono-label reveal">The problem</div>
+        <h2 class="section-title reveal">Founders need a public voice.<br>The market makes it painful.</h2>
+        <p class="section-subtitle reveal">You know you should be posting. But between running a company and trying to create content, something always breaks.</p>
+        <div class="problem-grid reveal">
+            <div class="problem-card">
+                <div class="num">01</div>
+                <h3>No time, no system</h3>
+                <p>You have sharp ideas but no process to turn them into consistent posts across LinkedIn, X, Instagram, or video. Content falls off every week.</p>
+            </div>
+            <div class="problem-card">
+                <div class="num">02</div>
+                <h3>Generic writers miss the mark</h3>
+                <p>Ghostwriters write "content" but not your voice. They don't understand your market, your positioning, or why your audience should care.</p>
+            </div>
+            <div class="problem-card">
+                <div class="num">03</div>
+                <h3>Discovery is fragmented</h3>
+                <p>Finding the right person means trawling Twitter DMs, LinkedIn, Upwork, and asking for referrals. No standard profiles, no proof of work, no trust signals.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VISION -->
+<section class="vision">
+    <div class="section-inner">
+        <div class="vision-grid">
+            <div class="vision-graphic reveal">
+                <div class="gap-diagram">
+                    <div class="gap-side founders">
+                        <div class="label">Founders</div>
+                        <p>Have deep expertise, product vision, and industry insight — but no time or system to turn it into content that builds trust, pipeline, and authority.</p>
+                    </div>
+                    <div class="gap-bridge">
+                        <div class="arrow">&#8597;</div>
+                        <p>The infrastructure gap</p>
+                    </div>
+                    <div class="gap-side creators">
+                        <div class="label">Creators</div>
+                        <p>Have distribution skills, platform fluency, and narrative instinct — but are stuck in low-value UGC gigs without access to strategic partnerships.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="vision-text reveal">
+                <div class="mono-label">The opportunity</div>
+                <h3>A new category between ghostwriters and agencies</h3>
+                <p>Creator-operators are not content vendors. They're strategic distribution partners who extract your thinking, build a narrative system, and ship content that compounds — across every format and platform.</p>
+                <p>The market for founder-led content is growing fast, but discovery, vetting, and deal structuring are still done through DMs and referrals. There's no infrastructure.</p>
+                <p style="color: var(--text-primary); font-weight: 500;">We're building it.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHAT THEY DO -->
+<section>
+    <div class="section-inner">
+        <div class="mono-label reveal">What a creator-operator does</div>
+        <h2 class="section-title reveal">Strategy + content + distribution.<br>Not just words on a page.</h2>
+        <p class="section-subtitle reveal">A creator-operator sits between a ghostwriter, brand strategist, and growth operator. They build systems, not just posts.</p>
+        <div class="services-grid reveal">
+            <div class="service-card">
+                <div class="icon-wrap">&#x1f399;</div>
+                <h3>Extract your thinking</h3>
+                <p>Weekly calls to capture your ideas, customer insights, and industry perspective. They pull the signal from the noise.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-wrap">&#x1f4d0;</div>
+                <h3>Build your narrative</h3>
+                <p>Define positioning, content pillars, and audience promise. Create a system that compounds over time, not random one-off posts.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-wrap">&#x270d;&#xfe0f;</div>
+                <h3>Create & publish</h3>
+                <p>Written posts, video scripts, carousels, reels — in your voice, on your schedule, consistently. Multi-format, multi-platform.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-wrap">&#x1f4ca;</div>
+                <h3>Distribute & iterate</h3>
+                <p>Repurpose across channels, engage strategically, track what resonates, and refine the approach monthly based on results.</p>
+            </div>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: 0.75rem;">PLATFORMS</p>
+            <div class="platforms">
+                <span class="platform-tag">LinkedIn</span>
+                <span class="platform-tag">X / Twitter</span>
+                <span class="platform-tag">Instagram</span>
+                <span class="platform-tag">Video (Reels, YouTube, Shorts)</span>
+                <span class="platform-tag">Newsletter</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" style="background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+        <div class="mono-label reveal">How it works</div>
+        <h2 class="section-title reveal">Matched in days, not months</h2>
+        <p class="section-subtitle reveal">Every creator-operator is vetted for strategic thinking, not just aesthetics. You get matched on niche, goals, and format.</p>
+        <div class="steps reveal">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div class="step-line"></div>
+                <h3>Tell us your goals</h3>
+                <p>Fill out a short intake: your niche, platforms, content goals, and budget range.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <div class="step-line"></div>
+                <h3>We match you</h3>
+                <p>We recommend 2–3 vetted operators based on your industry, format, and working style.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <div class="step-line"></div>
+                <h3>Start a paid pilot</h3>
+                <p>Run a focused first month: weekly calls, consistent output, clear scope. You pay the creator-operator directly.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">04</div>
+                <div class="step-line"></div>
+                <h3>Scale what works</h3>
+                <p>Move into a retainer or strategic partnership. Your content compounds while you focus on building.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VETTING -->
+<section class="vetting">
+    <div class="section-inner">
+        <div class="mono-label reveal">Quality control</div>
+        <h2 class="section-title reveal">Every operator is vetted.<br>Here's what we assess.</h2>
+        <p class="section-subtitle reveal">We don't list everyone who applies. Each creator-operator goes through a structured evaluation before they're matched with a founder.</p>
+        <div class="vetting-items reveal">
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Narrative & positioning</h4><p>Can they define a founder's POV, audience promise, and content pillars?</p></div>
+            </div>
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Extraction skill</h4><p>Can they turn messy founder thinking into sharp, publishable angles?</p></div>
+            </div>
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Platform fluency</h4><p>Do they understand the mechanics of LinkedIn, X, Instagram, and video formats?</p></div>
+            </div>
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Proof of outcomes</h4><p>Have they shipped real work for founders? We require case studies and measurable results.</p></div>
+            </div>
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Niche depth</h4><p>Are they fluent in a specific industry — SaaS, AI, wellness, fintech — or just generic?</p></div>
+            </div>
+            <div class="vetting-item">
+                <div class="check">&#10003;</div>
+                <div><h4>Professionalism</h4><p>Do they have clear processes, scope templates, and understand content rights and compliance?</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+    <div class="section-inner">
+        <div class="mono-label reveal">Pricing</div>
+        <h2 class="section-title reveal">Two ways to work together</h2>
+        <p class="section-subtitle reveal">Matching is free. You pay the creator-operator directly based on the scope you agree together. Exact deliverables and pricing are tailored to your needs.</p>
+        <div class="pricing-grid reveal">
+            <div class="pricing-card">
+                <div class="tier-label">Retainer</div>
+                <h3>Monthly partnership</h3>
+                <div class="price">Typical range: $2,000–$6,000/mo</div>
+                <ul>
+                    <li>Consistent content across your chosen platforms</li>
+                    <li>Weekly extraction calls with your operator</li>
+                    <li>Multi-format output: written, video, carousel</li>
+                    <li>Monthly strategy review and iteration</li>
+                    <li>Clear scope, content rights, and revision limits</li>
+                    <li>Cancel or adjust anytime after month one</li>
+                </ul>
+                <a href="https://tally.so/r/q4BX68" class="btn btn-secondary">Get matched</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="tier-label">Strategic partner</div>
+                <h3>Cash + equity hybrid</h3>
+                <div class="price">Custom structure — for long-term alignment</div>
+                <ul>
+                    <li>Everything in the retainer model</li>
+                    <li>Reduced monthly fee + equity or rev-share component</li>
+                    <li>Deep strategic alignment with your company</li>
+                    <li>Long-term narrative ownership and brand building</li>
+                    <li>Priority access to platform features as we grow</li>
+                    <li>Best for funded startups and growth-stage founders</li>
+                </ul>
+                <a href="https://tally.so/r/lbAXPV" class="btn btn-primary">Discuss partnership</a>
+            </div>
+        </div>
+        <p class="reveal" style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 2rem; max-width: 540px; margin-left: auto; margin-right: auto;">Scope and pricing are agreed directly between you and your creator-operator. We help standardise terms so there are no surprises on either side.</p>
+    </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section style="background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+        <div class="mono-label reveal">Who it's for</div>
+        <h2 class="section-title reveal">Two sides of the same problem</h2>
+        <div class="audience-grid reveal">
+            <div class="audience-card">
+                <h3>For founders</h3>
+                <div class="sub">You want a credible public voice but can't do it alone.</div>
+                <ul>
+                    <li>B2B, SaaS, or funded startups building authority</li>
+                    <li>Founders with sharp thinking but no time to post</li>
+                    <li>Leaders growing pipeline, trust, or investor visibility</li>
+                    <li>Anyone who's tried agencies and been disappointed</li>
+                    <li>Multi-platform needs: LinkedIn, X, Instagram, video</li>
+                </ul>
+                <a href="https://tally.so/r/q4BX68" class="btn btn-primary">Get matched with an operator</a>
+            </div>
+            <div class="audience-card">
+                <h3>For creator-operators</h3>
+                <div class="sub">You're more than a UGC creator. You want strategic work.</div>
+                <ul>
+                    <li>Ghostwriters and strategists who understand distribution</li>
+                    <li>Creators wanting retainers over one-off gigs</li>
+                    <li>Multi-format specialists: written, video, carousels</li>
+                    <li>B2B, SaaS, AI, wellness, or other niche fluency</li>
+                    <li>Open to equity partnerships with the right founders</li>
+                </ul>
+                <a href="https://tally.so/r/lbAXPV" class="btn btn-secondary">Apply to the cohort</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOUNDER STORY -->
+<section class="founder-section" id="about">
+    <div class="section-inner">
+        <div class="founder-grid">
+            <div class="founder-photo reveal">
+                <img src="militsa.jpg" alt="Militsa">
+            </div>
+            <div class="founder-text reveal">
+                <div class="mono-label">From the founder</div>
+                <h2>I'm Militsa. I've been on both sides of this problem.</h2>
+                <p>I spent years in management consulting and tech — working firsthand with founders who had brilliant ideas but no time to build a public voice. Then I started creating content myself and saw the other side: how much skill, time, and platform knowledge it actually takes to do well.</p>
+                <p>Over the last year, I've worked with founders on positioning and brand strategy. The consistent challenge? Finding someone who can actually execute — not just write posts, but build a narrative system that compounds. Meanwhile, talented creators are stuck in low-value UGC gigs despite having exactly the strategic skills founders need.</p>
+                <p style="color: var(--text-primary); font-weight: 500;">I get both sides of the market. So I'm building the bridge.</p>
+                <p>This is an early-stage pilot. We're testing demand, refining the model, and if the signal is strong, scaling into the infrastructure layer for creator-operator partnerships.</p>
+                <div class="founder-creds">
+                    <span class="cred">Ex-Management Consulting</span>
+                    <span class="cred">Tech Background</span>
+                    <span class="cred">Brand Strategist</span>
+                    <span class="cred">Founder</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="section-inner">
+        <div style="text-align: center;">
+            <div class="mono-label reveal">FAQ</div>
+            <h2 class="section-title reveal">Common questions</h2>
+        </div>
+        <div class="faq-list reveal">
+            <div class="faq-item">
+                <div class="faq-q">How is this different from hiring a ghostwriter?<span class="toggle">+</span></div>
+                <div class="faq-a">Ghostwriters write posts. Creator-operators do more: they define your narrative positioning, build a content system, handle multi-platform distribution, and iterate based on what's working. Think of them as a fractional content and distribution partner — not a writer-for-hire.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What platforms do you cover?<span class="toggle">+</span></div>
+                <div class="faq-a">Creator-operators work across LinkedIn, X/Twitter, Instagram, and video formats (Reels, YouTube Shorts, long-form video). Many specialise in specific platforms, and we match based on where your audience lives. Video and Instagram are particularly valuable because they're harder to do well — and that's exactly where strategic operators shine.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How much does it cost?<span class="toggle">+</span></div>
+                <div class="faq-a">Getting matched is free. You pay the creator-operator directly based on the scope you agree together. Typical retainers range from $2,000 to $6,000 per month depending on volume, platforms, and formats. For longer-term strategic partnerships, there are also hybrid structures with reduced fees and equity or rev-share components. Exact deliverables and pricing are always tailored to your needs.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How do you vet creator-operators?<span class="toggle">+</span></div>
+                <div class="faq-a">Every applicant goes through a structured evaluation covering narrative skill, extraction ability, platform fluency, proof of outcomes, niche depth, and professionalism. We don't list everyone who applies — only operators who demonstrate the strategic depth and reliability that founder-level work demands.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What does a first month typically look like?<span class="toggle">+</span></div>
+                <div class="faq-a">It depends on scope, but a typical pilot includes weekly extraction calls to capture your thinking, consistent content output on your chosen platforms, and a strategy review at the end of the month. The exact number of posts, formats, and channels is agreed upfront in a clear scope document.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Who owns the content?<span class="toggle">+</span></div>
+                <div class="faq-a">You do. Content rights, usage terms, and revision limits are all defined in the scope agreement before work begins. We help standardise these terms so there are no awkward conversations later.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What if the match doesn't work out?<span class="toggle">+</span></div>
+                <div class="faq-a">That's why the first month is a focused pilot — clear scope, defined deliverables, no long-term lock-in. If it's not the right fit, we'll help you find a better match. No penalties.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What about the equity / strategic partner option?<span class="toggle">+</span></div>
+                <div class="faq-a">For founders and operators who want deeper alignment, we facilitate hybrid structures where the operator takes a reduced monthly fee combined with equity or revenue share. This works best when both sides are committed to a long-term partnership and the operator is invested in the company's growth. We help structure these deals fairly.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">I'm a creator — what's in it for me?<span class="toggle">+</span></div>
+                <div class="faq-a">Higher-value partnerships with founders who value strategy, retainer-based work instead of one-off gigs, and a professional profile that makes you discoverable to the right clients. Plus the option to take equity in companies you believe in. We're building the infrastructure that lets you charge what you're worth.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Is this a marketplace or an agency?<span class="toggle">+</span></div>
+                <div class="faq-a">Neither, exactly. We're a curated matching network — think vetted introductions, not a Fiverr-style marketplace. We vet supply, qualify demand, and facilitate the match. The relationship is direct between founder and operator. Over time, we're building toward a platform that makes this process scalable.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+    <div class="glow glow-lavender"></div>
+    <h2 class="reveal">Ready to build your<br><span style="background:linear-gradient(135deg,var(--accent-lavender),var(--accent-olive));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">public voice?</span></h2>
+    <p class="reveal">Whether you're a founder who needs strategic distribution, or a creator who wants partnerships worth your skill.</p>
+    <div class="hero-ctas reveal">
+        <a href="https://tally.so/r/q4BX68" class="btn btn-primary btn-lg">I'm a founder — Get matched</a>
+        <a href="https://tally.so/r/lbAXPV" class="btn btn-secondary btn-lg">I'm a creator — Apply</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>&copy; 2026 CreatorOperators &nbsp;&middot;&nbsp; Curated pilot &nbsp;&middot;&nbsp; Built by Militsa</footer>
+
+<script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+    window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60); });
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        });
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+</script>
+</body>
+</html>
